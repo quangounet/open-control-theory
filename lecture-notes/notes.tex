@@ -4,6 +4,20 @@
 %% view a copy of this license, visit
 %% http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
+
+%TODO
+% Add background from part I
+% - Laplace transform and time response
+% - stability properties and poles
+% - system type
+% - pole/zero compensation
+% PI control by system type (do not re-derive the results)
+% Lead compensator design by algebraic method
+% Re-edit the tutorials
+
+
+
+
 \documentclass[a4paper,11pt]{report}
 
 %\documentclass[preprint,12pt]{elsarticle}
@@ -148,6 +162,161 @@
 
 \tableofcontents
 
+\setcounter{chapter}{-1}
+
+\chapter{Recapitulation of part I}
+
+\section{Modeling of physical systems}
+
+\subsection{Equations of motion}
+
+
+\subsection{Laplace transforms}
+
+
+
+\section{Stability and transient behavior}
+
+\subsection{Characteristic equation and stability}
+
+The stability of a system is determined by the \emph{denominator} of
+the transfer function, which is also called the \emph{Characteristic
+  Equation} (CE).
+
+
+\subsection{Transient behavior}
+
+
+\section{Steady-state error}
+
+\subsection{Definition}
+\begin{figure}[H]
+  \centering
+  \tikzstyle{block} = [draw, fill=blue!20, rectangle, minimum height=3em, minimum width=4em]
+  \tikzstyle{block2} = [draw, fill=blue!20, rectangle, minimum height=2em, minimum width=2em]
+  \tikzstyle{sum} = [draw, fill=blue!20, circle, node distance=1cm]
+  \tikzstyle{input} = [coordinate]
+  \tikzstyle{output} = [coordinate]
+  \begin{tikzpicture}[auto, >=latex']
+    % Nodes
+    \node [input] (input) {};
+    \node [sum, right = 1cm of input] (sum) {};
+    %\node [block2, right = 1cm of sum] (system) {$K$};
+    \node [block, right = 1cm of sum] (system2) {$G$};
+    \node [output, right = 2cm of system2] (output) {};
+    \node [block, below = 0.5cm of system2] (h) {$H$};
+    % Arrows
+    \draw [draw,->] (input) -- node {$R$} (sum);
+    \draw [->] (sum) -- node {$E$} (system2);
+    %\draw [->] (system) -- (system2);
+    \draw [->] (system2) -- node (y) {$C$}(output);
+    \draw [-] (y) |- (h) {} ;
+    \draw [->] (h) -| node[pos=0.99] {$-$}  node [near end] {} (sum);
+  \end{tikzpicture}  
+  \caption{Error signal: $E=R-C$}
+  \label{fig:sse}
+\end{figure}
+
+The steady-state error is defined by
+\begin{equation}
+  \label{eq:sse}
+  \mathrm{SSE} = \lim_{t\to\infty} e(t) = \lim_{s\to 0} sE(s).  
+\end{equation}
+
+The second equality sign comes from the application of the FVT and is
+valid only if the system is \emph{stable}.
+
+In general, one would like the steady-state error to be as small as
+possible, ideally zero.
+
+\subsection{System type and steady-state error}
+
+In general, to calculate the steady-state error, one uses the FVT as
+in equation~(\ref{eq:sse}). However, if the system is stable and
+\emph{unity-feedback}, then one can determine the system type and use
+this information to obtain the steady-state error much more easily.
+
+\begin{figure}[H]
+  \label{fig:systype}
+  \hspace{1.5cm}\textbf{Type 0}\hspace{3cm}\textbf{Type
+    1}\hspace{3cm}\textbf{Type 2}\\
+  \vspace{0.1cm} 
+
+  \centering \tikzstyle{block} = [draw, fill=blue!20,
+  rectangle, minimum height=3em, minimum width=3em]
+  \tikzstyle{controller} = [draw, fill=red!20, rectangle, minimum
+  height=3em, minimum width=4em] \tikzstyle{sum} = [draw,
+  fill=blue!20, circle, node distance=1cm] \tikzstyle{input} =
+  [coordinate] \tikzstyle{output} = [coordinate]
+  \begin{tikzpicture}[auto, >=latex']
+    % Nodes
+    \node [input] (input) {};
+    \node [sum, right = 0.5cm of input] (sum) {};
+    \node [block, right = 0.5cm of sum] (system) {$\frac{N_0(s)}{D_0(s)}$};
+    \node [output, right = 1cm of system] (output) {};
+    \node [input, below = 0.5cm of system] (m) {};
+    % Arrows
+    \draw [draw,->] (input) -- node {$R$} (sum);
+    \draw [->] (sum) -- node {} (system);
+    \draw [->] (system) -- node (y) {$C$}(output);
+    \draw [-] (y) |- (m) {} ;
+    \draw [->] (m) -| node[pos=0.99] {$-$}  node [near end] {} (sum);
+  \end{tikzpicture}  
+  \hspace{0.5cm}
+  \begin{tikzpicture}[auto, >=latex']
+    % Nodes
+    \node [input] (input) {};
+    \node [sum, right = 0.5cm of input] (sum) {};
+    \node [block, right = 0.5cm of sum] (system) {$\frac{N_1(s)}{sD_1(s)}$};
+    \node [output, right = 1cm of system] (output) {};
+    \node [input, below = 0.5cm of system] (m) {};
+    % Arrows
+    \draw [draw,->] (input) -- node {$R$} (sum);
+    \draw [->] (sum) -- node {} (system);
+    \draw [->] (system) -- node (y) {$C$}(output);
+    \draw [-] (y) |- (m) {} ;
+    \draw [->] (m) -| node[pos=0.99] {$-$}  node [near end] {} (sum);
+  \end{tikzpicture}  
+  \hspace{0.5cm}
+  \begin{tikzpicture}[auto, >=latex']
+    % Nodes
+    \node [input] (input) {};
+    \node [sum, right = 0.5cm of input] (sum) {};
+    \node [block, right = 0.5cm of sum] (system) {$\frac{N_2(s)}{s^2D_2(s)}$};
+    \node [output, right = 1cm of system] (output) {};
+    \node [input, below = 0.5cm of system] (m) {};
+    % Arrows
+    \draw [draw,->] (input) -- node {$R$} (sum);
+    \draw [->] (sum) -- node {} (system);
+    \draw [->] (system) -- node (y) {$C$}(output);
+    \draw [-] (y) |- (m) {} ;
+    \draw [->] (m) -| node[pos=0.99] {$-$}  node [near end] {} (sum);
+  \end{tikzpicture}  
+  \caption{Systems of types 0, 1 and 2. Note that $N_0, N_1, N_2, D_0,
+    D_1, D_2$ should not be factorizable by $s$.}
+\end{figure}
+
+\begin{itemize}
+\item For a system of type 0, let $K_p=\lim_{s\to 0}\frac{N_0(s)}{D_0(s)}$;
+\item For a system of type 1, let $K_v=\lim_{s\to 0}\frac{N_1(s)}{D_1(s)}$;
+\item For a system of type 2, let $K_a=\lim_{s\to 0}\frac{N_2(s)}{D_2(s)}$.
+\end{itemize}
+
+Then the steady-state errors are given by the table below.
+
+\begin{table}[htp]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    System type&Step input&Ramp input&Parabolic input\\\hline
+    Type 0&$\frac{1}{1+K_p}$&$\infty$&$\infty$\\\hline
+    Type 1&0&$\frac{1}{K_v}$&$\infty$\\\hline
+    Type 2&0&0&$\frac{1}{K_a}$\\\hline
+    Type 3&0&0&0\\\hline
+  \end{tabular}
+  \caption{System type and steady-state error}
+  \label{tab:systype}
+\end{table}
 
 \chapter{Introduction to controller design}
 
