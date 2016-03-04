@@ -14,12 +14,14 @@
 % PI control by system type (do not re-derive the results)
 % Lead compensator design by algebraic method
 % Re-edit the tutorials
+% Explain poles vs poles
 
 
 
 
 \documentclass[a4paper,11pt]{report}
 
+\usepackage{mathtools}
 %\documentclass[preprint,12pt]{elsarticle}
 \usepackage{adjustbox}
 %\usepackage[utf8]{inputenc}
@@ -160,20 +162,17 @@
 
 \maketitle
 
+\paragraph{Disclaimer} These notes are provided to help the students of
+MA3005 get a more systematic understanding of the topics presented
+during the lecture. I assume no liability or responsibility for any
+errors or omissions in the content. Students are advised to refer to
+the live lecture and lecture slides for exam-related matters.
+
 \tableofcontents
 
 \setcounter{chapter}{-1}
 
 \chapter{Recapitulation of part I}
-
-\section{Modeling of physical systems}
-
-\subsection{Equations of motion}
-
-
-\subsection{Laplace transforms}
-
-
 
 \section{Stability and transient behavior}
 
@@ -181,15 +180,32 @@
 
 The stability of a system is determined by the \emph{denominator} of
 the transfer function, which is also called the \emph{Characteristic
-  Equation} (CE).
+  Equation} (CE). More precisely, it is determined by the locations of
+the roots of the CE -- also called \emph{poles} -- in the complex
+plane.
 
+\begin{itemize}
+  \item If all the poles are in the open left half-plane,
+    the system is \emph{stable};
+  \item If all the poles are in the closed left half-plane, and a pair
+    of roots are on the imaginary axis, the system is \emph{marginally
+      stable};
+  \item If at least one pole is in the open right half-plane, the
+    system is \emph{unstable}.
+\end{itemize}
 
 \subsection{Transient behavior}
 
+Once a system has been determined as stable, one might be interested
+in its transient behaviork. The transient behavior depends on the
+dominant poles.
 
 \section{Steady-state error}
 
 \subsection{Definition}
+
+Consider a feedback system as in the figure below.
+
 \begin{figure}[H]
   \centering
   \tikzstyle{block} = [draw, fill=blue!20, rectangle, minimum height=3em, minimum width=4em]
@@ -217,14 +233,16 @@ the transfer function, which is also called the \emph{Characteristic
   \label{fig:sse}
 \end{figure}
 
-The steady-state error is defined by
+The steady-state error (if it exists) is defined by
 \begin{equation}
   \label{eq:sse}
-  \mathrm{SSE} = \lim_{t\to\infty} e(t) = \lim_{s\to 0} sE(s).  
+  \mathrm{SSE} := \lim_{t\to\infty} e(t).
 \end{equation}
 
-The second equality sign comes from the application of the FVT and is
-valid only if the system is \emph{stable}.
+If the system is stable, one can apply the Finaly Value Theorem to obtain
+\[
+\lim_{t\to\infty} e(t) = \lim_{s\to 0} sE(s).
+\]
 
 In general, one would like the steady-state error to be as small as
 possible, ideally zero.
@@ -235,6 +253,15 @@ In general, to calculate the steady-state error, one uses the FVT as
 in equation~(\ref{eq:sse}). However, if the system is stable and
 \emph{unity-feedback}, then one can determine the system type and use
 this information to obtain the steady-state error much more easily.
+
+Let $G$ be the open-loop transfer function. Assume that $G$ is written
+as
+\[
+G=\frac{N(s)}{s^kD(s)},
+\]
+where $N$ and $D$ are not factorizable by $s$. Then the type of the
+system is given by the integer $k$. The figure below shows the general
+form of systems of types 1, 2 and 3.
 
 \begin{figure}[H]
   \label{fig:systype}
@@ -296,13 +323,29 @@ this information to obtain the steady-state error much more easily.
     D_1, D_2$ should not be factorizable by $s$.}
 \end{figure}
 
-\begin{itemize}
-\item For a system of type 0, let $K_p=\lim_{s\to 0}\frac{N_0(s)}{D_0(s)}$;
-\item For a system of type 1, let $K_v=\lim_{s\to 0}\frac{N_1(s)}{D_1(s)}$;
-\item For a system of type 2, let $K_a=\lim_{s\to 0}\frac{N_2(s)}{D_2(s)}$.
-\end{itemize}
+Let us compute the steady-state error for a system of type $k$.
+\[
+sE(s) = s(R(s)-C(s)) = s\left(R(s)-\frac{G(s)}{1+G(s)}R(s)\right)=\frac{s}{1+G(s)}R(s).
+\]
 
-Then the steady-state errors are given by the table below.
+For unit-step input, one has $R(s)=1/s$. Thus,
+\[
+sE(s) = \frac{s}{1+G(s)}*\frac{1}{s} = \frac{1}{1+G(s)}
+\xrightarrow[s\to 0]{}\frac{1}{1+\lim_{s\to 0}G(s)}.
+\]
+For a system of type 0
+\[
+\lim_{s\to 0}G(s) = \lim_{s\to 0}\frac{N_0(s)}{D_0(s)} = \frac{N_0(0)}{D_0(0)}.
+\]
+Thus, the steady-state error of a system of type 0 for unit-step input
+is given by
+\[
+SSE = \frac{1}{1+\frac{N_0(0)}{D_0(0)}}.
+\]
+
+Carrying out similar calculations, one obtains the following table,
+which shows the steady-state errors of systems of types 0, 1, 2, 3 for
+unit-step, unit-ramp and unit-parabola inputs.
 
 \begin{table}[htp]
   \centering
@@ -314,9 +357,17 @@ Then the steady-state errors are given by the table below.
     Type 2&0&0&$\frac{1}{K_a}$\\\hline
     Type 3&0&0&0\\\hline
   \end{tabular}
-  \caption{System type and steady-state error}
+  \caption{Steady-state errors of systems of different types and for
+    different inputs.}
   \label{tab:systype}
 \end{table}
+
+\begin{itemize}
+\item for a system of type 0, $K_p:=\frac{N_0(0)}{D_0(0)}$ (position constant);
+\item for a system of type 1, $K_v:=\frac{N_1(0)}{D_1(0)}$ (velocity constant);
+\item for a system of type 2, $K_a:=\frac{N_2(0)}{D_2(0)}$
+  (acceleration constant).
+\end{itemize}
 
 \chapter{Introduction to controller design}
 
