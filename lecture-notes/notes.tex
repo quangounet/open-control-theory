@@ -6,15 +6,11 @@
 
 
 %TODO
-% Add background from part I
-% - Laplace transform and time response
-% - stability properties and poles
-% - system type
-% - pole/zero compensation
+% pole/zero compensation
 % PI control by system type (do not re-derive the results)
 % Lead compensator design by algebraic method
-% Re-edit the tutorials
 % Explain poles vs poles
+% Figure slow convergence
 
 
 
@@ -49,6 +45,9 @@
 
 \usepackage{mathrsfs}
 \usepackage{float}
+
+\usepackage{chngcntr}
+\counterwithin{figure}{chapter}
 
 \newcommand{\defeq}{\stackrel{\mathrm{def}}{=}}
 
@@ -186,25 +185,82 @@ plane.
 
 \begin{itemize}
   \item If all the poles are in the open left half-plane,
-    the system is \emph{stable};
+    the system is \emph{stable}, see Fig.~\ref{fig:ex-stable};
   \item If all the poles are in the closed left half-plane, and a pair
     of roots are on the imaginary axis, the system is \emph{marginally
-      stable};
+      stable}, see Fig.~\ref{fig:ex-margstable};
   \item If at least one pole is in the open right half-plane, the
-    system is \emph{unstable}.
+    system is \emph{unstable}, see Fig.~\ref{fig:ex-unstable}.
 \end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \noindent System poles \hspace{2cm} Response to unit step
+
+  \vspace{0.2cm}
+  \includegraphics[height=5cm]{fig/stability.pdf}
+  \includegraphics[height=5cm]{fig/sys-stable.pdf}
+  \caption{A stable system with transfer function
+    $\frac{C}{R}=\frac{1}{s^3+4s^2+6s+4}$. The CE is $s^3+4s^2+6s+4$,
+    which has three roots: $-1\pm j, -2$.}
+  \label{fig:ex-stable}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent System poles \hspace{2cm} Response to unit step
+
+  \vspace{0.2cm}
+  \includegraphics[height=5cm]{fig/stability-marg.pdf}
+  \includegraphics[height=5cm]{fig/sys-margstable.pdf}
+  \caption{A marginally stable system with transfer function
+    $\frac{C}{R}=\frac{1}{s^3+2s^2+4s+8}$. The CE is $s^3+2s^2+4s+8$,
+    which has three roots: $\pm 2j, -2$. The frequency of oscillation
+    is given by $\omega$, where $\omega$ is the norm of the roots on
+    the imaginary axis (here $\omega=2$\,rad/s).}
+  \label{fig:ex-margstable}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent System poles \hspace{2cm} Response to unit step
+
+  \vspace{0.2cm}
+  \includegraphics[height=5cm]{fig/stability-no.pdf}
+  \includegraphics[height=5cm]{fig/sys-unstable.pdf}
+  \caption{An unstable system with transfer function
+    $\frac{C}{R}=\frac{1}{s^3+s^2-2}$. The CE is $s^3+s^2-2$,
+    which has three roots: $-1\pm j, 1$.}
+  \label{fig:ex-unstable}
+\end{figure}
+
 
 \subsection{Transient behavior}
 
-Once a system has been determined as stable, one might be interested
-in its transient behaviork. The transient behavior depends on the
-dominant poles.
+Once a system has been determined as stable, one can investigate its
+transient behavior, roughly, how fast does the system response
+converge to its final value. This is measured by quantities such as
+settling time or maximum overshoot.
+
+The transient behavior depends primarily on the precise location of
+the dominant (i.e. rightmost) poles in the complex plane. The further
+the dominant poles to the left, the faster the convergence (the
+smaller the settling time and the maximum overshoot). Compare
+Fig.~\ref{fig:ex-slow} and Fig.~\ref{fig:ex-stable}: both systems are
+stable, but the system of Fig.~\ref{fig:ex-stable} converges faster
+than the system of Fig.~\ref{fig:ex-slow}, since its dominant poles
+are located more to the left ($-1\pm j$ vs $-0.5\pm j$).
+
+The transient behavior is also affected by other quantities such as
+the damping ratio $\zeta$ and the undamped natural frequency
+$\omega_0$. For more details, refer to the slides from Part I of the
+course.
 
 \section{Steady-state error}
 
 \subsection{Definition}
 
-Consider a feedback system as in the figure below.
+Consider a feedback system as in Fig.~\ref{fig:sse}.
 
 \begin{figure}[H]
   \centering
@@ -236,7 +292,7 @@ Consider a feedback system as in the figure below.
 The steady-state error (if it exists) is defined by
 \begin{equation}
   \label{eq:sse}
-  \mathrm{SSE} := \lim_{t\to\infty} e(t).
+  e_\sse := \lim_{t\to\infty} e(t).
 \end{equation}
 
 If the system is stable, one can apply the Finaly Value Theorem to obtain
@@ -254,17 +310,16 @@ in equation~(\ref{eq:sse}). However, if the system is stable and
 \emph{unity-feedback}, then one can determine the system type and use
 this information to obtain the steady-state error much more easily.
 
-Let $G$ be the open-loop transfer function. Assume that $G$ is written
-as
+Let $G$ be the feedforward transfer function. Assume that $G$ is
+written as
 \[
 G=\frac{N(s)}{s^kD(s)},
 \]
 where $N$ and $D$ are not factorizable by $s$. Then the type of the
-system is given by the integer $k$. The figure below shows the general
-form of systems of types 1, 2 and 3.
+system is given by the integer $k$. Fig.~\ref{fig:systype} shows the
+general form of systems of types 1, 2 and 3.
 
 \begin{figure}[H]
-  \label{fig:systype}
   \hspace{1.5cm}\textbf{Type 0}\hspace{3cm}\textbf{Type
     1}\hspace{3cm}\textbf{Type 2}\\
   \vspace{0.1cm} 
@@ -321,9 +376,11 @@ form of systems of types 1, 2 and 3.
   \end{tikzpicture}  
   \caption{Systems of types 0, 1 and 2. Note that $N_0, N_1, N_2, D_0,
     D_1, D_2$ should not be factorizable by $s$.}
+  \label{fig:systype}
 \end{figure}
 
-Let us compute the steady-state error for a system of type $k$.
+Let us carry further the computation of the steady-state error for a
+stable unity-feedback system.
 \[
 sE(s) = s(R(s)-C(s)) = s\left(R(s)-\frac{G(s)}{1+G(s)}R(s)\right)=\frac{s}{1+G(s)}R(s).
 \]
@@ -333,14 +390,14 @@ For unit-step input, one has $R(s)=1/s$. Thus,
 sE(s) = \frac{s}{1+G(s)}*\frac{1}{s} = \frac{1}{1+G(s)}
 \xrightarrow[s\to 0]{}\frac{1}{1+\lim_{s\to 0}G(s)}.
 \]
-For a system of type 0
+For a system of type 0, one has
 \[
 \lim_{s\to 0}G(s) = \lim_{s\to 0}\frac{N_0(s)}{D_0(s)} = \frac{N_0(0)}{D_0(0)}.
 \]
 Thus, the steady-state error of a system of type 0 for unit-step input
 is given by
 \[
-SSE = \frac{1}{1+\frac{N_0(0)}{D_0(0)}}.
+e_\sse = \frac{1}{1+\frac{N_0(0)}{D_0(0)}}.
 \]
 
 Carrying out similar calculations, one obtains the following table,
@@ -362,12 +419,44 @@ unit-step, unit-ramp and unit-parabola inputs.
   \label{tab:systype}
 \end{table}
 
+The constants $K_p$, $K_v$, and $K_a$ are defined as below
 \begin{itemize}
 \item for a system of type 0, $K_p:=\frac{N_0(0)}{D_0(0)}$ (position constant);
 \item for a system of type 1, $K_v:=\frac{N_1(0)}{D_1(0)}$ (velocity constant);
 \item for a system of type 2, $K_a:=\frac{N_2(0)}{D_2(0)}$
   (acceleration constant).
 \end{itemize}
+
+\begin{example}
+  Consider a unity-feedback system with feedforward transfer function
+  \[
+  G(s) = \frac{s^2+2s}{2s^4-s^2}.
+  \]
+  What is the steady-state error of the system for unit-ramp and
+  unit-parabola inputs?
+
+  Answer: One can simplify $G$ as follows
+  \[
+  G(s) = \frac{s(s+2)}{s^2(2s^2-1)} =  \frac{s+2}{s(2s^2-1)},
+  \]
+  which implies that the system is of type 1, with 
+  \[
+  N(s) = s+2 \quad ; \quad D(s) = 2s^2-1.
+  \]
+  From the table, the steady-state error for unit-ramp input is given
+  by
+  \[
+  e_\sse=\frac{1}{K_v},
+  \]
+  where the velocity constant $K_v$ is given by
+  \[
+  K_v = \frac{N(0)}{D(0)} = \frac{2}{-1} = -2.
+  \]
+  Thus $e_\sse = -1/2$.
+
+  Also from the table, the steady-state error for unit-parabola input
+  is $\infty$.
+\end{example}
 
 \chapter{Introduction to controller design}
 
@@ -762,7 +851,7 @@ integral actions, influence system performance.
 \label{sec:effectsd}
 
 Derivative action means that we introduce a $Ks$ term in the
-feedforward loop. Note that pure derivative controllers are seldom
+feedforward path. Note that pure derivative controllers are seldom
 used: in practice, we always have proportional-derivative control. The
 general form of a PD-controlled system is
 
@@ -2407,13 +2496,13 @@ lead-lag compensator (realizable with passive components).
 
 \subsection{PID controller}
 
-Consider a system with forward transfer function $G(s)$. We first
+Consider a system with feedforward transfer function $G(s)$. We first
 design a PD controller $K_1(s+z_{c1})$ to meet the transients
 specifications. Then, we design a PI controller
-$K_2\frac{s+z_{c2}}{s}$ for the system with forward TF
+$K_2\frac{s+z_{c2}}{s}$ for the system with feedforward TF
 $K_1(s+z_{c1})G(s)$ to meet the steady-state specifications without
 noticeably changing the transient behavior achieved previously. The
-resulting system will have a forward TF given by
+resulting system will have a feedforward TF given by
 \[
 K_2\frac{s+z_{c2}}{s}K_1(s+z_{c1})G(s).
 \]
@@ -2434,7 +2523,7 @@ transients specifications. Then, we design a lag compensator
 $K_2\frac{s+z_{c2}}{s+p_{c2}}$, with $p_{c1}<z_{c_1}\ll 1$, for the
 lead-compensated system to meet the steady-state specifications
 without noticeably changing the transient behavior achieved
-previously. The resulting system will have a forward TF given by
+previously. The resulting system will have a feedforward TF given by
 \[
 K_2\frac{s+z_{c2}}{s+p_{c2}}K_1\frac{s+z_{c1}}{s+p_{c1}}G(s) =
 K_1K_2\frac{(s+z_{c1})(s+z_{c2})}{(s+p_{c1})(s+p_{c2})} G(s).
@@ -2634,7 +2723,7 @@ behaviors.
 
   We had the same equation in Example~\ref{ex:pddesign}, which yielded
   $z_c=2.64$ and $\tilde{K}=5.61$. Thus, the velocity feedback gain
-  and the forward loop gain of the system at hand are given by
+  and the feedforward gain of the system at hand are given by
   \[
   K_c = 1/z_c = 0.38,\quad K = \tilde{K}/K_c = 14.8.
   \]
