@@ -246,15 +246,28 @@ The transient behavior depends primarily on the precise location of
 the dominant (i.e. rightmost) poles in the complex plane. The further
 the dominant poles to the left, the faster the convergence (the
 smaller the settling time and the maximum overshoot). Compare
-Fig.~\ref{fig:ex-slow} and Fig.~\ref{fig:ex-stable}: both systems are
-stable, but the system of Fig.~\ref{fig:ex-stable} converges faster
-than the system of Fig.~\ref{fig:ex-slow}, since its dominant poles
-are located more to the left ($-1\pm j$ vs $-0.5\pm j$).
+Fig.~\ref{fig:convergence-comp}, red line and
+Fig.~\ref{fig:convergence-comp}, green line : both systems are stable,
+but the red system converges faster than the green system, since its
+dominant poles are located more to the left ($-2\pm j$ vs $-1\pm
+j$).
 
-The transient behavior is also affected by other quantities such as
-the damping ratio $\zeta$ and the undamped natural frequency
-$\omega_0$. For more details, refer to the slides from Part I of the
-course.
+\begin{figure}[H]
+  \includegraphics[height=8cm]{fig/convergence-comp.pdf}
+  \caption{Comparison of the convergence speed of two systems. Red:
+    unit-step response of a system with transfer function
+    $\frac{C}{R}=\frac{5}{s^2+4s+5}$. The CE is $s^2+4s+5$, which has
+    two roots: $-2\pm j$. Green: unit-step response of a system with
+    transfer function $\frac{C}{R}=\frac{2}{s^2+2s+2}$. The CE is
+    $s^2+2s+2$, which has two roots: $-1\pm j$.}
+  \label{fig:convergence-comp}
+\end{figure}
+
+
+The transient behavior (in particular, whether the system oscillates,
+etc.) is also affected by other quantities such as the damping ratio
+$\zeta$ and the undamped natural frequency $\omega_0$. For more
+details, refer to the slides from Part I of the course.
 
 \section{Steady-state error}
 
