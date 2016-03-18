@@ -1772,41 +1772,20 @@ The CE of the system \emph{with PD} control is
 \[
 K(s+z_c)N(s)+D(s) = 0.
 \]
-We want the root locus of the new system to go through $s_\des$. The
-angle criterion then yields 
+Since we want the root locus of the new system to go through $s_\des$,
+we substitute $s_\des$ into the CE
 \[
-\angle D(s_\des)-\angle \left[(s_\des+z_c)N(s_\des)\right] =
+K(s_\des+z_c)N(s_\des)+D(s_\des) = 0.
 \]
-\[
-\angle D(s_\des)-\angle N(s_\des) - \angle(s_\des+z_c) = \pi \mod 2\pi,
-\]
-i.e.
-\[
-\angle (s_\des+z_c) = \angle D(s_\des)-\angle N(s_\des) - \pi \mod 2\pi.
-\]
-
-The quantity $\angle D(s_\des)-\angle N(s_\des) - \pi$ is called the
-``angle deficiency'' and noted
-$\alpha_\mathrm{def}$\,\footnote{Usually, the desired improvement in
-  transient behavior (smaller overshoot, shorter settling time)
-  entails a \emph{positive} $\alpha_\mathrm{def}$ [when reduced to the
-  interval $(-\pi,\pi)$]. The role of PD controllers and of lead
-  compensators is then to contribute a positive angle (lead) to cancel
-  out the angle deficiency, hence the term ``lead
-  compensator''.}. Designing the PD controller now amounts to compute
-the \emph{unique} $z_c$ so that
-$\angle(s_\des+z_c)=\alpha_\mathrm{def}$. This can be done by simple
-trigonometry, as shown in Example~\ref{ex:pddesign}.
-
-Finally, once we have obtained $z_c$, the appropriate $K$ can be
-computed by
-\[
-K = \frac{\|D(s_\des)\|}{\|s_\des+z_c\|\cdot\|N(s_\des)\|}.
-\]
-The proportional and derivative gains are finally given by
+As the value of $s_\des$ is given, the above equation has only two
+unknowns, $K$ and $z_c$. Examining the real and imaginary parts of the
+equation yields two independent equations, which allows solving for
+$K$ and $z_c$. Finally, the proportional and derivative gains are
+finally given by
 \[
 K_D = K,\quad K_P = z_cK.
 \]
+Example~\ref{ex:pddesign} shows the method in action.
 
 \begin{example}
   \label{ex:pddesign}
@@ -1847,37 +1826,40 @@ K_D = K,\quad K_P = z_cK.
     \label{fig:design-uncomp}
   \end{figure}
 
- Clearly, the root locus does not go through $s_\des=-2\pm1.9j$.  To
- verify this fact, we can compute the angle deficiency
-  \begin{eqnarray}
-    \label{eq:defi}
-    \alpha_\defi &=& \angle D(s_\des)-\angle N(s_\des) - \pi
-    \nonumber\\
-    &=& \angle [(-2+1.9j+1)(-2+1.9j+2)(-2+1.9j+4) - \pi \nonumber\\
-    &=& \angle(-3.61-10.66j) - \pi \simeq 1.24\,\mathrm{rad}\neq 0.\nonumber
-  \end{eqnarray}
-
-  We want now to find the $z_c$ such that
-  $\angle(s_\des+z_c)=\alpha_\des$. From Fig.~\ref{fig:zc}, we must
-  have
+  Clearly, the root locus does not go through $s_\des=-2\pm1.9j$.  To
+  verify this, we apply the angle criterion
   \[
-  \frac{1.9}{z_c-2}=\tan(\alpha_\defi).
+  \angle D(s_\des)-\angle N(s_\des)
+  = \angle [(-2+1.9j+1)(-2+1.9j+2)(-2+1.9j+4)] 
   \]
-  Thus $z_c=2+\frac{1.9}{\tan(1.24)}=2.64$. Regarding the gain, we have
   \[
-  K = \frac{\|D(s_\des)\|}{\|s_\des+z_c\|\cdot\|N(s_\des)\|} = 5.61,
+  = \angle(-3.61-10.66j) \simeq 4.38\,\mathrm{rad}\neq \pi.
   \]
-  which yields
+ 
+  We want now to find $K$ and $z_c$ such that
   \[
-  K_D = 5.61,\quad K_P=14.83.
+  K(s_\des+z_c)N(s_\des)+D(s_\des) = 0.  
   \]
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=5cm]{fig/adef-pd.pdf}
-    \caption{Computing $z_c$.}
-    \label{fig:zc}
-  \end{figure}
+  Substituting $s_\des=-2+1.9j$ yields
+  \[
+  K(-2+1.9j+z_c) + (-2+1.9j+1)(-2+1.9j+2)(-2+1.9j+4) =0, \quad \textrm{i.e.}
+  \]
+  \begin{equation}
+    \label{eq:pdeq}
+    [-3.61-(2-z_c)K] - [10.66-1.9K]j=0.  
+  \end{equation}
+  The imaginary part of~(\ref{eq:pdeq}) yields 
+  \[
+  K = \frac{10.66}{1.9} = 5.61.
+  \]
+  Substituting $K=5.61$ in the real part of~(\ref{eq:pdeq}) yields
+  \[
+  2-zc = \frac{-3.61}{5.61}=-0.64, \quad \textrm{i.e.} \quad z_c = 2+0.64 = 2.64.
+  \]
+  Finally,
+  \[
+  K_D = K = 5.61,\quad K_P= z_cK=14.83.
+  \]
 
   The compensated system is thus given by
 
@@ -2015,32 +1997,40 @@ controller, except for the term $1/(s+p_c)$.
 % \end{figure}
 
 
-Applying the angle criterion as in Section~\ref{sec:pddesign}, we
-find that $z_c$ and $p_c$ must obey
+% Applying the angle criterion as in Section~\ref{sec:pddesign}, we
+% find that $z_c$ and $p_c$ must obey
+% \begin{equation}
+%   \label{eq:lead}
+%   \angle(s_\des+z_c)-\angle(s_\des+p_c) = \alpha_\mathrm{def} \mod 2\pi,
+% \end{equation}
+
+% where $\alpha_\mathrm{def}$ is the angle deficiency given, as
+% previously, by
+% \[
+% \alpha_\mathrm{def}= \angle D(s_\des)-\angle N(s_\des) - \pi.
+% \]
+
+The CE of the system with lead compensator becomes
+\[
+K(s+z_c)N(s) + (s+p_c)D(s)=0.
+\]
+Since we want the root locus of the new system to go through $s_\des$,
+we substitute $s_\des$ into the CE
 \begin{equation}
   \label{eq:lead}
-  \angle(s_\des+z_c)-\angle(s_\des+p_c) = \alpha_\mathrm{def} \mod 2\pi,
+  K(s_\des+z_c)N(s_\des)+(s_\des+p_c)D(s_\des) = 0.  
 \end{equation}
 
-where $\alpha_\mathrm{def}$ is the angle deficiency given, as
-previously, by
-\[
-\alpha_\mathrm{def}= \angle D(s_\des)-\angle N(s_\des) - \pi.
-\]
-
-Here, contrary to the PD controller case, there are \emph{multiple}
-values of $z_c$ and $p_c$ that can satisfy (\ref{eq:lead}). However,
-if we choose a particular value for $z_c$, then there will be in
-general a unique value of $p_c$ that can make the root locus to go
-through $s_\des$. In practice, we shall choose a sensible value for
-$z_c$, and then determine the corresponding $p_c$ by simple
-trigonometry, as shown in Example~\ref{ex:lead}.
-
-Finally, once we have obtained $z_c$ and $p_c$, the appropriate $K$
-can be computed by
-\[
-K = \frac{\|s_\des+p_c\|\cdot\|D(s_\des)\|}{\|s_\des+z_c\|\cdot\|N(s_\des)\|}.
-\]
+As the value of $s_\des$ is given, the above equation has three
+unknowns, $K$, $z_c$ and $p_c$. Examining the real and imaginary parts
+of the equation yields two independent equations. Two equations and
+three unknowns means that, contrary to the PD controller case, there
+are \emph{multiple} values of $K$, $z_c$ and $p_c$ that can satisfy
+(\ref{eq:lead}). However, if we fix a particular value for $z_c$, then
+$K$ and $p_c$ will be uniquely determined. In practice, we shall
+choose a sensible value for $z_c$, and then determine the
+corresponding values for $K$ and $p_c$, as shown in
+Example~\ref{ex:lead}.
 
 \begin{example}
   \label{ex:lead}
@@ -2055,51 +2045,40 @@ K = \frac{\|s_\des+p_c\|\cdot\|D(s_\des)\|}{\|s_\des+z_c\|\cdot\|N(s_\des)\|}.
 
   As stated in the main text, there are multiple possible values for
   $z_c$: in fact, any $z_c$ verifying $0<z_c<z^*_c$ is possible. Let
-  us choose a particular $z_c$ and study how we can compute the
+  fix $z_c=1.5$ and study how we can compute the
   corresponding $p_c$.
 
-  From~(\ref{eq:lead}), we have
+  Substituting $s_\des=-2+1.9j$ and $z_c=1.5$ in~(\ref{eq:lead})
+  yields
   \[
-  \angle(s_\des+p_c) = \angle(s_\des+z_c)- \alpha_\defi =
-  \tilde{\alpha}_\defi.
+  K(-2+1.9j+1.5) +
   \]
-  
-  Note that, since $\angle(s_\des+z^*_c)- \alpha_\defi=0$ and
-  $z_c<z^*_c$, we have that $\tilde{\alpha}_\defi=\angle(s_\des+z_c)-
-  \alpha_\defi>0$.
-
-  Now $p_c$ can be found by the same calculations as in
-  Example~\ref{ex:pddesign} (see Fig.~\ref{fig:pc})
+  \[
+  (-2+1.9j+p_c)(-2+1.9j+1)(-2+1.9j+2)(-2+1.9j+4) =0, \quad \textrm{i.e.}
+  \]
   \begin{equation}
-    \label{eq:pc}
-    \frac{1.9}{p_c-2}=\tan(\tilde{\alpha}_\defi),\quad \textrm{i.e.}\quad p_c = 2
-    + \frac{1.9}{\tan(\tilde{\alpha}_\defi)}.
+    \label{eq:leadeq}
+    [27.47-3.61p_c-0.5K] - [14.46-10.66p_c+1.9K]j=0.  
   \end{equation}
+  We thus have the following $2\times 2$ linear system
+  \[
+  \left\{
+    \begin{array}{ccc}
+      -3.61p_c-0.5K&=&-27.47\\
+      -10.66p_c+1.9K&=&-14.46
+    \end{array}
+  \right.,
+  \]
+  which yields the solution $p_c=4.88$, $K=19.74$.
 
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=5cm]{fig/adef-lead.pdf}
-    \caption{Computing $p_c$.}
-    \label{fig:pc}
-  \end{figure}
-
-  Let us consider three numerical examples.
+  As stated in the main text, different values of $z_c$ will yield
+  different values of $p_c$ and $K$. For example,
   \begin{itemize}
-  \item For $z_c=1.5$, equation~(\ref{eq:pc}) yields
-    $p_c=4.88$. Fig.~\ref{fig:design-lead15} shows the root locus of
-    the compensated system. We can see that the root locus indeed goes
-    through $s_\des=-2\pm 1.9j$. The gain corresponding to
-    $s_\des$ is $K=19.74$.
-  \item For $z_c=1$, equation~(\ref{eq:pc}) yields $p_c=3.80$. Since
-    the system initially has a pole at $-1$, we have pole/zero
-    compensation. Fig.~\ref{fig:design-lead10} shows the root locus of
-    the compensated system. The gain corresponding to $s_\des$ is
-    $K=13.74$.
-  \item For $z_c=0.5$, equation~(\ref{eq:pc}) yields
-    $p_c=3.23$. Fig.~\ref{fig:design-lead05} shows the root locus of
-    the compensated system. The gain corresponding to $s_\des$ is
-    $K=10.53$.
+  \item If $z_c=1$, we shall find $p_c=3.80$ and $K=13.74$;
+  \item If $z_c=0.5$, we shall find $p_c=3.23$ and $K=10.53$.
   \end{itemize}
+
+  The following figures plot the root locus for the three cases.
 
   \begin{figure}[H]
     \centering
