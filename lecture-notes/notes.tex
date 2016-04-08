@@ -673,9 +673,9 @@ The transfer function of this system can be calculated as
 \]
 
 Since $Kk$ is positive, there are two complex poles $\pm
-j\sqrt{Kk}$. Thus, this system is \emph{unstable} for all values of
+j\sqrt{Kk/m}$. Thus, this system is \emph{unstable} for all values of
 the gain $K$. Actually, it oscillates with frequency
-$\omega=\sqrt{Kk}$, see Fig.~\ref{fig:stepresp}.
+$\omega=\sqrt{Kk/m}$, see Fig.~\ref{fig:stepresp}.
 
 \begin{figure}[H]
   \centering
@@ -3464,7 +3464,7 @@ experimental the Bode plot of the gain, we can
   to the closest integer.
 \end{itemize}
 
-Similarly, regarding the system type, we can
+Similarly, regarding the system order, we can
 \begin{itemize}
 \item fit a straight line to the \emph{extreme right} portion of the
   gain plot;
