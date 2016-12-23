@@ -1,0 +1,220 @@
+%% Copyright (C) 2015 Quang-Cuong Pham <cuong.pham@normalesup.org>
+%% This work is licensed under the Creative Commons
+%% Attribution-NonCommercial-ShareAlike 4.0 International License. To
+%% view a copy of this license, visit
+%% http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
+
+%TODO
+% pole/zero compensation
+% PI control by system type (do not re-derive the results)
+% Lead compensator design by algebraic method
+% Explain poles vs poles
+% Figure slow convergence
+
+
+
+
+\documentclass{standalone}
+
+
+\usepackage{dirtree}
+\usepackage{graphicx}
+\usepackage{pgfplots, pgfplotstable}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{automata}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{patterns}
+\usetikzlibrary{positioning}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{shapes}
+\usetikzlibrary{shapes.multipart}
+
+
+\pgfplotsset{%
+compat=newest,
+every axis label={font=\small},
+tick label style={font=\footnotesize},
+label style={font=\small},
+legend style={font=\scriptsize},
+every legend to name picture/.style={east}
+}
+
+
+% Commands
+\newcommand\foldericon{\includegraphics[scale=0.15]{icon_folder}}
+\newcommand\fileicon{\includegraphics[scale=0.15]{icon_file}}
+\newcommand{\folder}[1]{\foldericon\ {#1}}
+\newcommand{\file}[1]{\fileicon\ {#1}}
+
+% Helper lengths
+\newlength\handsize
+\newlength\takktile
+\newlength\figureheight
+\newlength\figurewidth
+\newlength\taskheight
+\newlength\armheight
+
+% Math stuff
+\usepackage{amsmath}
+\newcommand\vect[1]{\boldsymbol{#1}}
+\newcommand\mat[1]{\boldsymbol{#1}}
+\newcommand{\minus}{\small{-}}
+\newcommand{\plus}{\scriptsize{+}}
+
+\newenvironment{customlegend}[1][]{%
+    \begingroup
+    % inits/clears the lists (which might be populated from previous
+    % axes):
+    \csname pgfplots@init@cleared@structures\endcsname
+    \pgfplotsset{#1}%
+}{%
+    % draws the legend:
+    \csname pgfplots@createlegend\endcsname
+    \endgroup
+}%
+% makes \addlegendimage available (typically only available within an
+% axis environment):
+\def\addlegendimage{\csname pgfplots@addlegendimage\endcsname}
+
+% Block diagrams
+\tikzstyle{block} = [draw, fill=blue!20, rectangle, minimum height=10mm, minimum width=10mm]
+\tikzstyle{sum} = [draw, fill=blue!20, circle, inner sep=1pt, minimum height=3mm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\tikzstyle{branch} = [circle,inner sep=0pt,minimum size=1mm,fill=black,draw=black]
+
+% Boxplots
+\usepackage{filecontents}
+\pgfplotsset{
+    box plot/.style={
+        /pgfplots/.cd,
+        black,
+        only marks,
+        mark=-,
+        mark size=\pgfkeysvalueof{/pgfplots/box plot width},
+        /pgfplots/error bars/y dir=plus,
+        /pgfplots/error bars/y explicit,
+        /pgfplots/table/x index=\pgfkeysvalueof{/pgfplots/box plot x index},
+    },
+    box plot box/.style={
+        /pgfplots/error bars/draw error bar/.code 2 args={%
+            \draw  ##1 -- ++(\pgfkeysvalueof{/pgfplots/box plot width},0pt) |- ##2 -- ++(-\pgfkeysvalueof{/pgfplots/box plot width},0pt) |- ##1 -- cycle;
+        },
+        /pgfplots/table/.cd,
+        y index=\pgfkeysvalueof{/pgfplots/box plot box top index},
+        y error expr={
+            \thisrowno{\pgfkeysvalueof{/pgfplots/box plot box bottom index}}
+            - \thisrowno{\pgfkeysvalueof{/pgfplots/box plot box top index}}
+        },
+        /pgfplots/box plot
+    },
+    box plot top whisker/.style={
+        /pgfplots/error bars/draw error bar/.code 2 args={%
+            \pgfkeysgetvalue{/pgfplots/error bars/error mark}%
+            {\pgfplotserrorbarsmark}%
+            \pgfkeysgetvalue{/pgfplots/error bars/error mark options}%
+            {\pgfplotserrorbarsmarkopts}%
+            \path ##1 -- ##2;
+        },
+        /pgfplots/table/.cd,
+        y index=\pgfkeysvalueof{/pgfplots/box plot whisker top index},
+        y error expr={
+            \thisrowno{\pgfkeysvalueof{/pgfplots/box plot box top index}}
+            - \thisrowno{\pgfkeysvalueof{/pgfplots/box plot whisker top index}}
+        },
+        /pgfplots/box plot
+    },
+    box plot bottom whisker/.style={
+        /pgfplots/error bars/draw error bar/.code 2 args={%
+            \pgfkeysgetvalue{/pgfplots/error bars/error mark}%
+            {\pgfplotserrorbarsmark}%
+            \pgfkeysgetvalue{/pgfplots/error bars/error mark options}%
+            {\pgfplotserrorbarsmarkopts}%
+            \path ##1 -- ##2;
+        },
+        /pgfplots/table/.cd,
+        y index=\pgfkeysvalueof{/pgfplots/box plot whisker bottom index},
+        y error expr={
+            \thisrowno{\pgfkeysvalueof{/pgfplots/box plot box bottom index}}
+            - \thisrowno{\pgfkeysvalueof{/pgfplots/box plot whisker bottom index}}
+        },
+        /pgfplots/box plot
+    },
+    box plot median/.style={
+        /pgfplots/box plot,
+        /pgfplots/table/y index=\pgfkeysvalueof{/pgfplots/box plot median index}
+    },
+    box plot width/.initial=1em,
+    box plot x index/.initial=0,
+    box plot median index/.initial=1,
+    box plot box top index/.initial=2,
+    box plot box bottom index/.initial=3,
+    box plot whisker top index/.initial=4,
+    box plot whisker bottom index/.initial=5,
+}
+
+\newcommand{\boxplot}[2][]{
+    \addplot [box plot median, red] table {#2};
+    \addplot [forget plot, box plot box, blue] table {#2};
+    \addplot [forget plot, box plot top whisker, black] table {#2};
+    \addplot [forget plot, box plot bottom whisker, black] table {#2};
+}
+
+% Dimensions
+\pgfarrowsdeclarecombine{<-}{->}{|}{|}{latex}{latex}
+\def\Dimline[#1][#2][#3][#4]{
+    \begin{scope}[>=latex] % redef arrow for dimension lines
+        \draw let \p1=#1, \p2=#2, \n0={veclen(\x2-\x1,\y2-\y1)} in [<->,
+        decoration={markings, % switch on markings
+                mark=at position .5 with {\node[#3] at (0,0) {#4};},
+        },
+        postaction=decorate] #1 -- #2 ;
+    \end{scope}
+}
+
+\begin{document}
+
+
+
+\begin{tikzpicture}[auto, node distance=20mm,>=latex',every text node part/.style={align=center}]
+  % Blocks
+  \node [input] (fr) {};
+  \node [sum, right of=fr, node distance=10mm] (sum1) {};
+  \node [branch, right of=sum1, node distance=10mm] (fe) {};
+  \node [block, right of=sum1, node distance=25mm] (kp) {$\vect{k}_p$};
+  \node [block, above left=5mm and -5mm of kp] (dt) {$\dfrac{du}{dt}$};
+  \node [block, right of=dt, node distance=15mm] (kv) {$\vect{k}_v$};
+  \node [sum, right of=kp] (sum2) {\plus};
+  \node [sum, right of=sum2, node distance=15mm] (sum3) {\plus};
+  \node [input, above of=sum3, node distance=15mm] (xr) {};
+  \node [block, right of=sum3] (robot) {ROBOT};
+  \node [block, below right=-10mm and 10mm of robot, minimum height=30mm] (env) {\rotatebox{90}{Environment}};
+  \node [block, below of=sum3] (ft_sensor) {F/T Sensor};
+  % Lines
+  \draw [->] (fr) -- node[pos=0.85] {\plus} node [pos=0]{$\vect{f}_r$} (sum1);
+  \draw [->] (sum1) -- node[pos=0.25]  {$\vect{f}_e$} (kp);
+  \draw [->] (kp) --  (sum2);
+  \draw [->] (kv) -|  (sum2);
+  \draw [->] (fe) |-  (dt);
+  \draw [->] (dt) --  (kv);
+  \draw [->] (sum2) -- node {$\vect{x}_{f}$} (sum3);
+  \draw [->] (xr) --  node [pos=0, above]{$\vect{x}_r$} (sum3);
+  \draw [->] (sum3) -- node {$\vect{x}_c$} (robot);
+  \draw [->] (robot) --  (robot -| env.west);
+  \draw [<-] (ft_sensor) -- (ft_sensor -| env.west);
+  \draw [->] (ft_sensor) -|  node[pos=0.95] {\minus} node[pos=0.75]  {$\vect{f}_s$} (sum1);
+\end{tikzpicture}
+
+
+\end{document}
+
+
+
+%%%LocalVariables:
+%%%mode:latex
+%%%TeX-master:t
+%%%End:
