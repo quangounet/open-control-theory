@@ -184,29 +184,22 @@ every legend to name picture/.style={east}
   % Blocks
   \node [input] (fr) {};
   \node [sum, right of=fr, node distance=10mm] (sum1) {};
-  \node [branch, right of=sum1, node distance=10mm] (fe) {};
-  \node [block, right of=sum1, node distance=25mm] (kp) {$\vect{k}_p$};
-  \node [block, above left=5mm and -5mm of kp] (dt) {$\dfrac{du}{dt}$};
-  \node [block, right of=dt, node distance=15mm] (kv) {$\vect{k}_v$};
-  \node [sum, right of=kp] (sum2) {\plus};
-  \node [sum, right of=sum2, node distance=15mm] (sum3) {\plus};
+  \node [block, right of=sum1, node distance=25mm] (pd) {$\vect{k}_p+\vect{k}_ds$};
+  \node [sum, right of=pd, node distance=25mm] (sum3) {\plus};
   \node [input, above of=sum3, node distance=15mm] (xr) {};
-  \node [block, right of=sum3] (robot) {ROBOT};
+  \node [block, right of=sum3, node distance=35mm] (robot) {Robot (with internal\\
+    position controller)};
   \node [block, below right=-10mm and 10mm of robot, minimum height=30mm] (env) {\rotatebox{90}{Environment}};
-  \node [block, below of=sum3] (ft_sensor) {F/T Sensor};
+  \node [block, below of=sum3] (ft_sensor) {F/T sensor};
   % Lines
-  \draw [->] (fr) -- node[pos=0.85] {\plus} node [pos=0]{$\vect{f}_r$} (sum1);
-  \draw [->] (sum1) -- node[pos=0.25]  {$\vect{f}_e$} (kp);
-  \draw [->] (kp) --  (sum2);
-  \draw [->] (kv) -|  (sum2);
-  \draw [->] (fe) |-  (dt);
-  \draw [->] (dt) --  (kv);
-  \draw [->] (sum2) -- node {$\vect{x}_{f}$} (sum3);
-  \draw [->] (xr) --  node [pos=0, above]{$\vect{x}_r$} (sum3);
-  \draw [->] (sum3) -- node {$\vect{x}_c$} (robot);
+  \draw [->] (fr) -- node[pos=0.85] {\plus} node [pos=0]{$\vect{f}_\mathrm{ref}$} (sum1);
+  \draw [->] (sum1) -- node {$\vect{f}_\mathrm{err}$} (pd);
+  \draw [->] (pd) --  node {$\vect{x}_\mathrm{err}$} (sum3);
+  \draw [->] (xr) --  node [pos=0, above]{$\vect{x}_\mathrm{ref}$} (sum3);
+  \draw [->] (sum3) -- node {$\vect{x}_\mathrm{com}$} (robot);
   \draw [->] (robot) --  (robot -| env.west);
   \draw [<-] (ft_sensor) -- (ft_sensor -| env.west);
-  \draw [->] (ft_sensor) -|  node[pos=0.95] {\minus} node[pos=0.75]  {$\vect{f}_s$} (sum1);
+  \draw [->] (ft_sensor) -|  node[pos=0.95] {\minus} node[pos=0.75]  {$\vect{f}_\mathrm{sensed}$} (sum1);
 \end{tikzpicture}
 
 
