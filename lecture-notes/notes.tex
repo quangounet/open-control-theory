@@ -1519,6 +1519,7 @@ crossing the imaginary axis means that the root locus goes into the
 RHP, which in turn means that the system becomes unstable.
 
 \begin{example}
+  \label{ex:crossing}
   Consider again the CE
   \[
   K(s+0.5) + (s^2+2s+5)(s^2+3s+20) = 0.
@@ -1555,6 +1556,44 @@ RHP, which in turn means that the system becomes unstable.
   correspond to $K=-40.9$ and the solutions $\omega=\pm 5.07$
   correspond to $K=73.4$. We can thus conclude that the root locus
   cross the imaginary axis for $\omega=\pm 5.07$ and $K=73.4$.
+\end{example}
+
+The gain $K$ where the system crosses the imaginary axis can also be
+recovered by the Routh-Hurwitz criterion. 
+
+\begin{example}
+  Consider the same CE as in the previous example
+  \[
+  K(s+0.5) + (s^2+2s+5)(s^2+3s+20) = 0.
+  \]
+  Expanding this CE yields
+  \[
+  s^4+5s^3+31s^2+(55+K)s+(100+0.5K) = 0.
+  \]
+  Construct the Routh array
+
+  \[
+  \begin{array}{|c|c|c|c|}
+    \hline
+    s^4 & 1 & 31 &  100+0.5K\\
+    \hline
+    s^3 & 5 & 55+K &  \\
+    \hline
+    s^2 & \frac{100-K}{5} & 100+0.5K &\\
+    \hline
+    s & \frac{-K^2+32.5K+3000}{100-K}&0 & \\
+    \hline
+    1 & 100+0.5K& & \\
+    \hline
+  \end{array}
+  \]
+  
+  The first column of the Routh array gives the following necessary
+  and sufficient condition for stability: $K<100$ and
+  $K^2-32.5K-3000<0$. The latter inequality yields
+  $-40.9<K<73.4$. Therefore, the necessary and sufficient condition
+  for stability is that $K<73.4$. We have thus recovered the result of
+  Example~\ref{ex:crossing}.
 \end{example}
 
 
@@ -2927,6 +2966,8 @@ c_\mathrm{ss}(t) = \rho \frac{e^{j(\omega t+\phi)}-e^{-j(\omega
 
 \section{Bode plots : generalities}
 
+\subsection{Interpretation of Bode plots}
+
 The previous section has shown that the response of a stable linear
 system with transfer function $G(j\omega)$ to a sinusoidal input of
 frequency $\omega$ is entirely determined by the amplitude and the
@@ -3006,6 +3047,11 @@ Section~\ref{sec:bode-analysis}.
   \end{figure}
 
 \end{example}
+
+
+\subsection{Filtering}
+
+Bode plots are particularly suited to represent filters.
 
 \section{Bode plots : sketching}
 \label{sec:bode-sketch}
