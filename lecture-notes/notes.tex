@@ -3054,13 +3054,43 @@ Section~\ref{sec:bode-analysis}.
 Bode plots are particularly suited to visualize the behaviors of
 filters. Consider for instance the circuit below
 
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=11cm]{fig/circuit.png}
-    \caption{A circuit with an operational amplifier.}
-    \label{fig:circuit}
-  \end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=6cm]{fig/circuit.png}
+  \caption{A circuit with an operational amplifier.}
+  \label{fig:circuit}
+\end{figure}
 
+After some circuit calculations (see MA2009), the transfer function
+of this circuit is given by
+\[
+G(j\omega) = \frac{V_\textrm{out}}{V_\textrm{in}} = 
+-\frac{R_2}{R_1}\frac{j\frac{\omega}{\omega_1}}
+{\left(1+j\frac{\omega}{\omega_1}\right)\left(1+j\frac{\omega}{\omega_2}\right)},
+\]
+where
+\[
+\omega_1=\frac{1}{R_1C_1}, \quad \omega_2=\frac{1}{R_2C_2}.
+\]
+
+The Bode plots of this circuit (with $R_1=1\Omega, R_2=10\Omega,
+C_1=1\textrm{mF}, C_2=1\mu\textrm{F}$) can then be obtained as below
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=11cm]{fig/circuit-bode.pdf}
+  \caption{Bode plot of the circuit. The black vertical lines indicate
+  the positions of $\omega_1=10^3$ and $\omega_2=10^5$.}
+  \label{fig:circuit-bode}
+\end{figure}
+
+One can observe, in the gain plot, that the gain is maximal for
+$\omega\in[\omega_1,\omega_2]$. Outside of that range, for
+$\omega\to\0$ and $\omega\to\infty$, the gain decreases quickly and
+converges to 0. Thus, one can say that the circuit is a
+\emph{band-pass} filter, with the passband being
+$[\omega_1,\omega_2]$.
 
 
 \section{Bode plots : sketching}

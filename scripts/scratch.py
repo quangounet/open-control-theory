@@ -36,26 +36,39 @@ axes().set_aspect("equal")
 
 
 # Bode plots
-sys = tf([3,5,300],[1])
-freq = logspace(-5,5,5000)
+#sys = tf([3,5,300],[1])
+R1 = 1
+R2 = 10
+C1 = 1e-3
+C2 = 1e-6
+w1 = 1/(R1*C1)
+w2 = 1/(R2*C2)
+sys = tf([-R2/w1,0],[R1/(w1*w2),R1*(1/w1+1/w2),R1])
+
+
+freq = logspace(-1,10,5000)
 amp, ang, _ = bode(sys,freq,Plot=False,dB=True,deg=False)
 #amp2, ang2, _ = bode(sys2,freq,Plot=False,dB=True,deg=False)
 figure(0)
 clf()
 ax1 = subplot(211) 
 plot(freq,amp,'r',linewidth=2)
+plot([w1,w1],[-100,100],"k")
+plot([w2,w2],[-100,100],"k")
 #plot(freq,amp2,'g',linewidth=2)
 grid("on")
 xscale('log')
 ylabel("Gain (dB)", fontsize = 20)
-axis([freq[0],freq[-1],-20,220])
+axis([freq[0],freq[-1],-50,30])
 ax2 = subplot(212,sharex=ax1)
 plot(freq,ang,'r',linewidth=2)
+plot([w1,w1],[-100,100],"k")
+plot([w2,w2],[-100,100],"k")
 #plot(freq,ang2,'g',linewidth=2)
 grid("on")
 ylabel("Phase shift (rad)", fontsize = 20)
 xlabel("Frequency (rad/s)", fontsize = 20)
-yticks([0,pi/2,pi],["$0$","$\pi/2$","$\pi$"])
-axis([freq[0],freq[-1],-pi/2,3*pi/2])
+yticks([0,-pi,-2*pi],["$0$","$-\pi$","$-2\pi$"])
+axis([freq[0],freq[-1],-2*pi,0])
 tight_layout()
 #savefig("../notes/fig/exbode.pdf")
