@@ -24,8 +24,19 @@ ion()
 
 
 
+
+
+# Root locus
+sys = tf([1],[1,5,8,6,0])
+rvect, kvect = rlocus(sys, klist = arange(0,40,0.01))
+axes().set_aspect("equal")
+#savefig("../notes/fig/rlocusex.pdf")
+
+
+
+
 # Bode plots
-sys = tf([3,3,300],[1])
+sys = tf([3,5,300],[1])
 freq = logspace(-5,5,5000)
 amp, ang, _ = bode(sys,freq,Plot=False,dB=True,deg=False)
 #amp2, ang2, _ = bode(sys2,freq,Plot=False,dB=True,deg=False)
