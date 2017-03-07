@@ -947,27 +947,10 @@ proportional control as below
   \caption{First order system with proportional controller.}
 \end{figure}
 
-The closed loop transfer function is
+The controlled system is of type 0, therefore, the steady-state error
+for unit-step input is
 \[
-\frac{C}{R} = \frac{KG}{1+KG},
-\]
-where $G=\frac{1}{Ts+1}$.
-
-The error is
-\[
-E = R-C = \frac{R}{1+KG}.
-\]
-
-For unit-step input, we have $R=\frac{1}{s}$, thus
-\[
-E(s) = \frac{1}{s(1+KG(s))}.
-\]
-
-From the FVT (verify that the system is stable), we have
-\[
-\lim_{t\to\infty}e(t) = \lim_{s\to 0}sE(s) = \lim_{s\to
-  0}\frac{1}{1+KG(s)} = \lim_{s\to
-  0}\frac{1}{1+K\frac{1}{Ts+1}}=\frac{1}{1+K}. 
+\lim_{t\to\infty}e(t) = \frac{1}{1+K}. 
 \]
 
 Thus, no matter the value of $K$, we shall always have a non-zero
@@ -1003,13 +986,11 @@ Consider now the same system but with integral control
   \caption{First order system with integral controller.}
 \end{figure}
 
-Following the same calculations as previously (with $K$ replaced by
-$\frac{K}{s}$), we arrive at (verify that the system is stable)
+The controlled system is now of type 1, therefore, the steady-state error for
+unit-step input is 0 for any gain $K$, i.e.
 \[
-\lim_{t\to\infty}e(t) = \lim_{s\to
-  0}\frac{1}{1+\frac{K}{s}\frac{1}{Ts+1}} = 0.
+\lim_{t\to\infty}e(t) = 0. 
 \]
-Thus, the steady-state error vanishes for any value of the gain $K$.
 
 The side-effect of integral controllers is that they tend to make the
 system less stable.
@@ -2139,7 +2120,7 @@ Example~\ref{ex:lead}.
     \label{fig:design-lead05}
   \end{figure}
 
-  Let us now compare the steady state errors to unit step input of the
+  Let us now compare the steady-state errors to unit step input of the
   different compensated sytems (which are all of type 0).
 
   Recall first that the position constant\,\footnote{Note that the
