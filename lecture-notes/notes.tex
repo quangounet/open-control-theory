@@ -443,18 +443,18 @@ The constants $K_p$, $K_v$, and $K_a$ are defined as below
 \begin{example}
   Consider a unity-feedback system with feedforward transfer function
   \[
-  G(s) = \frac{s^2+2s}{2s^4-s^2}.
+  G(s) = \frac{s^2+2s}{2s^4+s^3+3s^2}.
   \]
   What is the steady-state error of the system for unit-ramp and
   unit-parabola inputs?
 
   Answer: One can simplify $G$ as follows
   \[
-  G(s) = \frac{s(s+2)}{s^2(2s^2-1)} =  \frac{s+2}{s(2s^2-1)},
+  G(s) = \frac{s(s+2)}{s^2(2s^2+s+3)} =  \frac{s+2}{s(2s^2+s+3)},
   \]
   which implies that the system is of type 1, with 
   \[
-  N(s) = s+2 \quad ; \quad D(s) = 2s^2-1.
+  N(s) = s+2 \quad ; \quad D(s) = 2s^2+s+3.
   \]
   From the table, the steady-state error for unit-ramp input is given
   by
@@ -463,9 +463,9 @@ The constants $K_p$, $K_v$, and $K_a$ are defined as below
   \]
   where the velocity constant $K_v$ is given by
   \[
-  K_v = \frac{N(0)}{D(0)} = \frac{2}{-1} = -2.
+  K_v = \frac{N(0)}{D(0)} = \frac{2}{3}.
   \]
-  Thus $e_\sse = -1/2$.
+  Thus $e_\sse = 1.5$.
 
   Also from the table, the steady-state error for unit-parabola input
   is $\infty$.
