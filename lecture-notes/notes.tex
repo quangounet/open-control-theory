@@ -1657,7 +1657,7 @@ then the root locus goes through $s_\des$.
 Next, \emph{if} the root locus indeed goes through $s_\des$, then one
 can determine the corresponding gain $K$ by
 \[
-K = \frac{\|D(s_\des)\|}{\|N(s_\des)\|}.
+K = \frac{|D(s_\des)|}{|N(s_\des)|}.
 \]
 
 \begin{example}
@@ -1693,7 +1693,7 @@ K = \frac{\|D(s_\des)\|}{\|N(s_\des)\|}.
 
   Next, we can compute the gain $K$ that corresponds to $s_1$ by
   \[
-  K = \frac{\|2(-1+j)^2\|}{\|0.5(-1+j+1)\|} = \frac{4}{0.5} = 8.
+  K = \frac{|2(-1+j)^2|}{|0.5(-1+j+1)|} = \frac{4}{0.5} = 8.
   \]
   One can verify these results graphically in
   Fig.~\ref{fig:rlocusex2}.
@@ -2174,12 +2174,12 @@ Let us now explain why lead compensators are less sensitive to noise
 than PD controllers. Basically, noise is a signal with very high
 frequency. We shall see in Chapter~\ref{chap:fr} that the amplitude of
 the response of a system with transfer function $G$ to a signal of
-frequency $\omega$ is given by $\|G(j\omega)\|$. Thus, the amplitude
-of the response of a PD controller is $\|K(j\omega+z_c)\|$, which
+frequency $\omega$ is given by $|G(j\omega)|$. Thus, the amplitude
+of the response of a PD controller is $|K(j\omega+z_c)|$, which
 converges to $\infty$ ans $\omega\to\infty$. On the other hand, the
 amplitude of the response of a lag compensator is
 \[
-\frac{K\|j\omega+z_c\|}{\|j\omega+p_c\|},
+\frac{K|j\omega+z_c|}{|j\omega+p_c|},
 \]
 which converges to $K$ as $\omega\to\infty$.
 
@@ -2860,7 +2860,7 @@ c_\mathrm{ss}(t) = a e^{-j\omega t} + \bar a e^{j\omega t}.
 \]
 
 Let us next rewrite $G(j\omega)$ in the polar form as $G(j\omega)=\rho
-e^{i\phi}$, where $\rho = \|G(j\omega)\|$ and $\phi=\angle
+e^{i\phi}$, where $\rho = |G(j\omega)|$ and $\phi=\angle
 G(j\omega)$.  Thus $a$ and $\bar a$ can be rewritten as
 \[
 a = -\frac{\rho e^{-j\phi}}{2j},\quad \bar a =\frac{\rho e^{j\phi}}{2j},
@@ -2869,7 +2869,7 @@ which yields
 \[
 c_\mathrm{ss}(t) = \rho \frac{e^{j(\omega t+\phi)}-e^{-j(\omega
     t+\phi)}}{2j} = \rho \sin(\omega t + \phi)=
-\|G(j\omega)\|\sin(\omega t +\angle G(j\omega))
+|G(j\omega)|\sin(\omega t +\angle G(j\omega))
 \]
 
 \begin{summary}
@@ -2877,11 +2877,11 @@ c_\mathrm{ss}(t) = \rho \frac{e^{j(\omega t+\phi)}-e^{-j(\omega
   The steady-state response of a stable linear system with transfer
   function $G(s)$ to a sinusoidal input of the form $\sin(\omega t)$
   is a sinusoid of the same frequency, but with amplitude
-  $\|G(j\omega)\|$ and phase shift $\angle G(j\omega)$, i.e.
+  $|G(j\omega)|$ and phase shift $\angle G(j\omega)$, i.e.
   \[
-  c_\mathrm{ss}(t) = \|G(j\omega)\|\sin\left(\omega t+\angle G(j\omega)\right).
+  c_\mathrm{ss}(t) = |G(j\omega)|\sin\left(\omega t+\angle G(j\omega)\right).
   \]
-  $\|G(j\omega)\|$ is also called the \emph{gain}.
+  $|G(j\omega)|$ is also called the \emph{gain}.
 \end{summary}
 
 \begin{example}
@@ -2957,11 +2957,11 @@ phase of $G(j\omega)$. The Bode plots give a convenient representation
 of the amplitude and the phase of $G(j\omega)$ as a function of
 $\omega$
 \begin{itemize}
-\item the amplitude plot shows $\|G(j\omega)\|$ as a function of
-  $\omega$. Since both $\omega$ and $\|G(j\omega)\|$ can have values
+\item the amplitude plot shows $|G(j\omega)|$ as a function of
+  $\omega$. Since both $\omega$ and $|G(j\omega)|$ can have values
   in very large ranges, the plot is logarithmic: the scale of the
   X-axis -- displaying the values of $\omega$ -- is logarithmic; the
-  Y-axis displays $20\log(\|G(j\omega)\|)$. Note that $\log$ is taken
+  Y-axis displays $20\log(|G(j\omega)|)$. Note that $\log$ is taken
   in base 10 and that the unit of the Y-axis is the \emph{decibel}
   (dB);
 \item the phase plot shows $\angle G(j\omega)$ as a function of
@@ -2998,14 +2998,14 @@ Section~\ref{sec:bode-analysis}.
   By reading on the Bode plots, we found that
   \begin{itemize}
   \item For $\omega=0.01$, the gain is  $\simeq-45$\,dB. We have
-    $20\log(\|G(j\omega)\|) = -45$, thus $\|G(j\omega)\|=10^{-45/20} =
+    $20\log(|G(j\omega)|) = -45$, thus $|G(j\omega)|=10^{-45/20} =
     0.0056$. Next, the phase shift is $\simeq\frac{\pi}{2}$\,rad. Thus,
     the steady-state response for $r_1$ is approximately
     \[
     c_\mathrm{ss1} \simeq 0.0056\sin(0.01t+\pi/2).
     \]
   \item For $\omega=1000$, the gain is $\simeq0$\,dB, which
-    corresponds to $(\|G(j\omega)\|=1$. The phase shift is
+    corresponds to $(|G(j\omega)|=1$. The phase shift is
     $\simeq0$\,rad. Thus the response to $r_2$ is approximately the
     same as $r_2$, i.e.
     \[
@@ -3096,7 +3096,7 @@ visualized by their Bode plots.
 Consider two systems with transfer functions $G(s)$ and $H(s)$. Remark
 that
 \[
-20\log(\|G(j\omega)H(j\omega)\|) = 20\log(\|G(j\omega)\|) + 20 \log(\|H(j\omega)\|),
+20\log(|G(j\omega)H(j\omega)|) = 20\log(|G(j\omega)|) + 20 \log(|H(j\omega)|),
 \]
 \[
 \angle(G(j\omega)H(j\omega)) = \angle(G(j\omega)) + \angle(H(j\omega)).
@@ -3113,7 +3113,7 @@ complex function, we can
 
 Another interesting point to remark is that
 \[
-20\log\left(\left\|\frac{1}{G(j\omega)}\right\|\right) = -20\log(\|G(j\omega)\|),
+20\log\left(\left|\frac{1}{G(j\omega)}\right|\right) = -20\log(|G(j\omega)|),
 \]
 \[
 \angle\left(\frac{1}{G(j\omega)}\right) = -\angle(G(j\omega)).
@@ -3155,7 +3155,7 @@ of $K$.
 Consider the derivative term $G(s)=s$. 
 \begin{itemize}
 \item We have
-  $20\log(\|G(j\omega)\|)=20\log(\|j\omega\|)=20\log(\omega)$. Thus
+  $20\log(|G(j\omega)|)=20\log(|j\omega|)=20\log(\omega)$. Thus
   the Bode plot of the gain is a straight line with slope $+20$: every
   decade, the line goes up 20\,dB. For $\omega=1$, we have
   $20\log(\omega)=0$, so the line goes through the point
@@ -3186,11 +3186,11 @@ integral terms.
 
 Consider the transfer function $G(s)=s+a$. Regarding the gain plot,
 \begin{itemize}
-\item when $\omega\to 0$, $20\log(\|j\omega+a\|)\simeq
+\item when $\omega\to 0$, $20\log(|j\omega+a|)\simeq
   20\log(a)$. Thus the asymptote to the left is a horizontal line
   with $y=20\log(a)$;
-\item when $\omega\to\infty$, $20\log(\|j\omega+a\|)\simeq
-  20\log(\|j\omega\|)=20\log(\omega)$. Thus, the asymptote to the
+\item when $\omega\to\infty$, $20\log(|j\omega+a|)\simeq
+  20\log(|j\omega|)=20\log(\omega)$. Thus, the asymptote to the
   right is a straight line with slope $+20$ (equation $y=20x$);
 \item the two asymptotes meet when $20\log(a)=20x$,
   i.e. $\log(a)=x=\log(\omega)$, i.e. $\omega=a$. This intersection
@@ -3264,7 +3264,7 @@ gain plot
 \item the asymptote on the left is a horizontal line with $y=0$;
 \item on the right, we have 
   \[
-  20\log(\|G(j\omega\|)\simeq20\log(\omega_n^2/\omega^2)=40(\log(\omega_n)-\log(\omega)).
+  20\log(|G(j\omega|)\simeq20\log(\omega_n^2/\omega^2)=40(\log(\omega_n)-\log(\omega)).
   \]
   Thus, the asymptote is a line with equation $y=40\log(\omega_n)-x$.
 \item The two asymptotes meet when $0=40\log(\omega_n)-x$, i.e. when
@@ -3343,7 +3343,7 @@ $G/(1+G)$.
 
 Regarding the gain plot, we have, when $\omega\to 0$
 \[
-20\log(\|G(j\omega)\|) \simeq
+20\log(|G(j\omega)|) \simeq
 20\log\left(\frac{|N(0)|}{\omega^k|D(0)|}\right)
 = 20\log\left(\frac{|N(0)|}{|D(0)|}\right) - 20k\log(\omega).
 \]
@@ -3378,7 +3378,7 @@ $G/(1+G)$.
 
 Regarding the gain plot, we have, when $\omega\to \infty$
 \[
-20\log(\|G(j\omega)\|) \simeq
+20\log(|G(j\omega)|) \simeq
 20\log\left(\frac{|A|}{\omega^n}\right)
 = 20\log |A| - 20n\log(\omega),
 \]
@@ -3408,7 +3408,7 @@ $y=\pi-n\pi/2\mod 2\pi$.
 The middle part ranges from $\omega=0.1\omega_{\min}$ to
 $\omega=10\omega_{\max}$. Here, we simply \emph{sample} some points in
 the interval $(0.1\omega_{\min},10\omega_{\max})$ and evaluate
-\emph{numerically} $20\log(\|G(j\omega)\|)$ and $\angle
+\emph{numerically} $20\log(|G(j\omega)|)$ and $\angle
 G(j\omega)$. Since the plots tend to display large variations around
 the corner frequencies, we shall sample more densely around the corner
 frequencies.
@@ -3457,7 +3457,7 @@ frequencies.
     
   \begin{tabular}{|r|r|r|r|}
     \hline
-    $x$ & $\omega$ & $20\log(\|G(j\omega)\|)$ & $\angle G(j\omega)$\\
+    $x$ & $\omega$ & $20\log(|G(j\omega)|)$ & $\angle G(j\omega)$\\
     \hline
     -2 & 0.01 & 40.22 & 0.1 \\
     -1.5 & 0.03 & 20.59 & 0.31 \\
@@ -3475,7 +3475,7 @@ frequencies.
 
   \begin{tabular}{|r|r|r|r|}
     \hline
-    $x$ & $\omega$ & $20\log(\|G(j\omega)\|)$ & $\angle G(j\omega)$\\
+    $x$ & $\omega$ & $20\log(|G(j\omega)|)$ & $\angle G(j\omega)$\\
     \hline
     -1.15 & 0.07 & 7.94 & 0.62 \\
     -1.1 & 0.08 & 6.3 & 0.67 \\
@@ -3489,7 +3489,7 @@ frequencies.
 
   \begin{tabular}{|r|r|r|r|}
     \hline
-    $x$ & $\omega$ & $20\log(\|G(j\omega)\|)$ & $\angle G(j\omega)$\\
+    $x$ & $\omega$ & $20\log(|G(j\omega)|)$ & $\angle G(j\omega)$\\
     \hline
     0.7 & 5.01 & -27.58 & 1.53 \\
     0.75 & 5.62 & -25.82 & 1.52 \\
@@ -3565,7 +3565,7 @@ other words, we have found that the gain plot has a horizontal left
 asymptote). If the transfer function of the system is $G$, then the
 Y-coordinate of this asymptote is given by
 \[
-\lim_{\omega\to 0} 20\log(\|G(j\omega)\|) = 20\log(|G(0)|) = 20\log K_p,
+\lim_{\omega\to 0} 20\log(|G(j\omega)|) = 20\log(|G(0)|) = 20\log K_p,
 \]
 where $K_p$ is the position constant. Thus, we can find the position
 constant of a type-0 system as follows
@@ -3697,14 +3697,14 @@ through the following theorem
   $G/(1+G)$) is stable if and only if
   \begin{equation}
     \label{eq:nyq}
-    \|G(j\omega)\| < 1\quad \textrm{when}\quad \angle G(j\omega) = \pm\pi
+    |G(j\omega)| < 1\quad \textrm{when}\quad \angle G(j\omega) = \pm\pi
     \mod 2\pi.  
   \end{equation}
   An equivalent condition is
   \begin{equation}
     \label{eq:nyq2}
     \angle G(j\omega) > -\pi \quad \textrm{when}\quad
-    \|G(j\omega)\| = 1.  
+    |G(j\omega)| = 1.  
   \end{equation}
 \end{theorem}
 
@@ -3729,7 +3729,7 @@ through the following theorem
   phase plot, we can see that $\angle G(j\omega) = -\pi$ for
   $\omega\simeq 6.6$\,rad/s. Consider now the gain plot. At
   $\omega=6.6$\,rad/s, we find that the gain in dB is \emph{negative}
-  (around -5.5\,dB), which means that $\|G(j\omega)\|<1$. Therefore,
+  (around -5.5\,dB), which means that $|G(j\omega)|<1$. Therefore,
   we can conclude that the corresponding unity-feedback system is
   \emph{stable}.
 
@@ -3744,7 +3744,7 @@ through the following theorem
   gains -- 600 or 200 -- do not contribute to the phase). In the gain
   plot, we find that the gain in dB at $\omega\simeq 6.6$ is
   \emph{positive} (around +4\,dB), which means that
-  $\|G_2(j\omega)\|>1$. Therefore, we can conclude that the
+  $|G_2(j\omega)|>1$. Therefore, we can conclude that the
   corresponding unity-feedback system is \emph{unstable}.
 \end{example}
 
@@ -3765,7 +3765,7 @@ through the following theorem
 
   Let us determine whether the corresponding unity-feedback system is
   stable using the (second) Nyquist criterion~\ref{eq:nyq}. From the
-  phase plot, we can see that $\|G(j\omega)\| = 1$ for $\omega\simeq
+  phase plot, we can see that $|G(j\omega)| = 1$ for $\omega\simeq
   4.5$\,rad/s. Consider now the phase plot. At $\omega=4.5$\,rad/s, we
   find that the phase is $\angle G(j\omega)\simeq
   -2.7>-\pi$. Therefore, we can conclude that the corresponding
@@ -3777,7 +3777,7 @@ through the following theorem
   \]
   The Bode plots of this system is presented in
   Fig.~\ref{fig:bode-nyq}, green dashed lines. From the phase plot, we
-  can see that the $\|G_2(j\omega_2)\| = 1$ for $\omega_2\simeq
+  can see that the $|G_2(j\omega_2)| = 1$ for $\omega_2\simeq
   7.5$\,rad/s. In the phase plot, we find that $\angle
   G_2(j\omega_2)\simeq -3.35<-\pi$. Therefore, we can conclude that
   the corresponding unity-feedback system is \emph{unstable}.
@@ -3835,7 +3835,7 @@ G=\frac{200}{(s+2)(s+4)(s+5)}.
 \]
 We saw that the frequency for which $\angle G(j\omega) = -\pi$ was
 $\omega\simeq 6.6$\,rad/s. Next, the gain at this frequency was found
-to be $20\log\|G(j\omega)\|=-5.5$\,dB.
+to be $20\log|G(j\omega)|=-5.5$\,dB.
 
 Assume now that the TF has been multiplied by a factor $K$, so that
 the new TF is
@@ -3845,12 +3845,12 @@ KG = \frac{200K}{(s+2)(s+4)(s+5)}.
 We have $\angle KG$ = $\angle G$, so $\angle KG(j\omega) = -\pi$ also for
 $\omega\simeq 6.6$\,rad/s. Next, the gain at this frequency will be
 \[
-20\log\|KG(j\omega)\| = 20\log K + 20\log\|G(j\omega)\|= 20\log K -5.5\,\mathrm{dB}.
+20\log|KG(j\omega)| = 20\log K + 20\log|G(j\omega)|= 20\log K -5.5\,\mathrm{dB}.
 \]
 If we want the unity-feedback system associated with $KG$
 to be stable, we must have, by the Nyquist criterion
 \[
-20\log\|KG(j\omega)\| < 0,
+20\log|KG(j\omega)| < 0,
 \]
 which implies that $20\log K<5.5$\,dB (or $K< 10^{5.5/20}=1.88$).
 
@@ -3868,7 +3868,7 @@ corresponding to $G_2$ will be unstable. This is confirmed by
 Example~\ref{ex:nyq}.
 
 In general, we can see from the above development that the gain margin
-is given by $G_M=-20\log\|G(j\omega^*)\|$ where $\omega^*$ is the
+is given by $G_M=-20\log|G(j\omega^*)|$ where $\omega^*$ is the
 frequency that verifies $\angle
 G(j\omega^*)=-\pi$. Fig.~\ref{fig:bode-gain-margin} illustrates the
 evaluation of $G_M$ for $G=\frac{200}{(s+2)(s+4)(s+5)}$.
@@ -3884,7 +3884,7 @@ $\phi_M$ is the maximum angle that we can subtract to the open-loop
 transfer function before the corresponding unity-feedback feedback
 system becomes unstable. Formally, $\phi_M$ is given by
 $\phi_M=\pi+\angle G(j\omega^*)$ where $\omega^*$ is the frequency
-that verifies $\|G(j\omega^*)\|=1$.  For
+that verifies $|G(j\omega^*)|=1$.  For
 $G=\frac{200}{(s+2)(s+4)(s+5)}$, Example~\ref{ex:nyq2} showed that
 $\phi_M\simeq\pi-2.7\simeq 0.44$\,rad. Fig.~\ref{fig:bode-phase-margin}
 illustrates this evaluation.
